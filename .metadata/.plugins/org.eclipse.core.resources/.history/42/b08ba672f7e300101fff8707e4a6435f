@@ -1,0 +1,97 @@
+import java.util.Scanner;
+
+public class StringAnaly {
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String text;
+
+        /* ---------- Read input using do-while ---------- */
+        do {
+            text = sc.nextLine();
+        } while (text.trim().isEmpty()); // force at least one read
+
+        int words = 0;
+        int sentences = 0;
+        int digits = 0;
+        int letters = 0;
+
+        String longestWord = "";
+        String currentWord = "";
+
+        /* ---------- Manual character scanning ---------- */
+        for (int i = 0; i < text.length(); i++) {
+            char ch = text.charAt(i);
+
+            // Count letters and digits
+            if (Character.isLetter(ch)) {
+                letters++;
+                currentWord += ch;
+            } else if (Character.isDigit(ch)) {
+                digits++;
+                currentWord += ch;
+            } else {
+                // Word boundary encountered
+                if (!currentWord.isEmpty()) {
+                    words++;
+                    if (currentWord.length() > longestWord.length()) {
+                        longestWord = currentWord;
+                    }
+                    currentWord = "";
+                }
+
+                // Sentence termination
+                if (ch == '.' || ch == '!' || ch == '?') {
+                    sentences++;
+                }
+            }
+        }
+
+        // Handle last word if string doesn't end with punctuation
+        if (!currentWord.isEmpty()) {
+            words++;
+            if (currentWord.length() > longestWord.length()) {
+                longestWord = currentWord;
+            }
+        }
+
+        /* ---------- Count vowels ---------- */
+        int[] vowelCount = countVowels(text);
+
+        /* ---------- Output ---------- */
+        System.out.println("Words: " + words);
+        System.out.println("Sentences: " + sentences);
+        System.out.println("Digits: " + digits + ", Letters: " + letters);
+        System.out.println("Longest word: \"" + longestWord + "\"");
+        System.out.println(
+                "Vowel freq: a=" + vowelCount[0] +
+                " e=" + vowelCount[1] +
+                " i=" + vowelCount[2] +
+                " o=" + vowelCount[3] +
+                " u=" + vowelCount[4]
+        );
+
+        sc.close();
+    }
+
+    /**
+     * Counts frequency of vowels in a string (case-insensitive).
+     * @param s input string
+     * @return int array of size 5 for a, e, i, o, u
+     */
+    static int[] countVowels(String s) {
+        int[] v = new int[5];
+
+        for (int i = 0; i < s.length(); i++) {
+            char ch = Character.toLowerCase(s.charAt(i));
+            switch (ch) {
+                case 'a': v[0]++; break;
+                case 'e': v[1]++; break;
+                case 'i': v[2]++; break;
+                case 'o': v[3]++; break;
+                case 'u': v[4]++; break;
+            }
+        }
+        return v;
+    }
+}

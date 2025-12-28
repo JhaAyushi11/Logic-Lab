@@ -1,0 +1,98 @@
+import java.util.Scanner;
+
+public class StringAnaly {
+
+    /**
+     * Counts frequency of vowels (a, e, i, o, u) in the given string.
+     * Case-insensitive.
+     */
+    public static int[] countVowels(String s) {
+        int[] vowels = new int[5]; // a, e, i, o, u
+
+        for (int i = 0; i < s.length(); i++) {
+            char ch = Character.toLowerCase(s.charAt(i));
+            switch (ch) {
+                case 'a' -> vowels[0]++;
+                case 'e' -> vowels[1]++;
+                case 'i' -> vowels[2]++;
+                case 'o' -> vowels[3]++;
+                case 'u' -> vowels[4]++;
+            }
+        }
+        return vowels;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        String text;
+
+        /* ---------- Read input using do-while ---------- */
+        do {
+            text = sc.nextLine();
+        } while (text.trim().isEmpty());
+
+        int wordCount = 0;
+        int sentenceCount = 0;
+        int digitCount = 0;
+        int letterCount = 0;
+
+        String longestWord = "";
+        String currentWord = "";
+
+        /* ---------- Manual scanning ---------- */
+        for (int i = 0; i < text.length(); i++) {
+            char ch = text.charAt(i);
+
+            // Count digits and letters
+            if (Character.isDigit(ch)) {
+                digitCount++;
+            }
+            if (Character.isLetter(ch)) {
+                letterCount++;
+            }
+
+            // Sentence count
+            if (ch == '.' || ch == '!' || ch == '?') {
+                sentenceCount++;
+            }
+
+            // Word building (ignore punctuation)
+            if (Character.isLetterOrDigit(ch)) {
+                currentWord += ch;
+            } else {
+                if (!currentWord.isEmpty()) {
+                    wordCount++;
+                    if (currentWord.length() > longestWord.length()) {
+                        longestWord = currentWord;
+                    }
+                    currentWord = "";
+                }
+            }
+        }
+
+        // Handle last word if string ends without punctuation
+        if (!currentWord.isEmpty()) {
+            wordCount++;
+            if (currentWord.length() > longestWord.length()) {
+                longestWord = currentWord;
+            }
+        }
+
+        int[] vowelFreq = countVowels(text);
+
+        /* ---------- Output ---------- */
+        System.out.println("Words: " + wordCount);
+        System.out.println("Sentences: " + sentenceCount);
+        System.out.println("Digits: " + digitCount + ", Letters: " + letterCount);
+        System.out.println("Longest word: \"" + longestWord + "\"");
+        System.out.println(
+                "Vowel freq: a=" + vowelFreq[0] +
+                " e=" + vowelFreq[1] +
+                " i=" + vowelFreq[2] +
+                " o=" + vowelFreq[3] +
+                " u=" + vowelFreq[4]
+        );
+
+        sc.close();
+    }
+}

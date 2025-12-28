@@ -1,0 +1,12 @@
+
+public class MiniATM {
+	static void withdraw(double amt, int pin, int enteredPin) {
+	    if (pin != enteredPin) {
+	        System.out.println("Wrong PIN");
+	        return;
+	    }
+	    if (amt <= balance) balance -= amt;
+	}
+
+
+}
